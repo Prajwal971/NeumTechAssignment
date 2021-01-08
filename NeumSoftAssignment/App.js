@@ -30,7 +30,7 @@ export default function App() {
           <Stack.Screen
             name="Home"
             component={Home}
-            options={{title: 'Welcome'}}
+            options={{title: 'Mario Games Character'}}
           />
           <Stack.Screen
             name="Detail"

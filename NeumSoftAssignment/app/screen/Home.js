@@ -69,13 +69,10 @@ export default function Home({navigation}) {
   const searchFilterFunction = (text) => {
     if (text) {
       const newData = masterDataSource.filter(function (item) {
-        const itemData = item.character
-          ? item.character
-          : '';
+        const itemData = item.character ? item.character: '';
         const textData = text;
         return itemData.indexOf(textData) > -1;
       });
-      console.log('testing of search',newData)
       setFilteredDataSource(newData);
       setSearch(text);
     } else {
@@ -91,7 +88,7 @@ export default function Home({navigation}) {
       ) : (
         <View>
           <SearchBar
-            // round
+            round
             searchIcon={{size: 24}}
             onChangeText={(text) => searchFilterFunction(text)}
             onClear={(text) => searchFilterFunction('')}
