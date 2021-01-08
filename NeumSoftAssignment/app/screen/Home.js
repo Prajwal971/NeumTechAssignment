@@ -15,7 +15,9 @@ export default function Home({navigation}) {
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
 
-  useEffect(() => {
+  useEffect(() => getData(), []);
+
+  const getData = () => {
     fetch('https://www.amiiboapi.com/api/amiibo', {
       method: 'GET',
       headers: {
@@ -30,7 +32,7 @@ export default function Home({navigation}) {
       })
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
-  }, []);
+  };
 
   const renderItem = ({item}) => {
     return (
@@ -69,7 +71,7 @@ export default function Home({navigation}) {
   const searchFilterFunction = (text) => {
     if (text) {
       const newData = masterDataSource.filter(function (item) {
-        const itemData = item.character ? item.character: '';
+        const itemData = item.character ? item.character : '';
         const textData = text;
         return itemData.indexOf(textData) > -1;
       });
@@ -79,6 +81,14 @@ export default function Home({navigation}) {
       setFilteredDataSource(masterDataSource);
       setSearch(text);
     }
+  };
+
+  const renderFooter = () => {
+    return (
+      <View style={styles.footerLoader}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
   };
 
   return (
@@ -97,9 +107,10 @@ export default function Home({navigation}) {
           />
           <FlatList
             data={filteredDataSource}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item, index) => item.id}
             renderItem={renderItem}
             ItemSeparatorComponent={ItemSeparatorView}
+            ListFooterComponent={renderFooter}
           />
         </View>
       )}
@@ -116,5 +127,9 @@ const styles = StyleSheet.create({
   buttonContainer: {
     color: 'white',
     margin: 10,
+  },
+  footerLoader: {
+    marginTop: 10,
+    alignItems: 'center',
   },
 });
